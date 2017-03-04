@@ -16,26 +16,10 @@ ReactiveDatatable = function(options) {
         stateLoadParams: function(settings, data) {
             // Make it easy to change to the stored page on .update()
             self.page = data.start / data.length;
-        },
-
-        /*
-
-		"drawCallback": function( settings ) {
-        	var api = new $.fn.dataTable.Api( settings );
-
-	        // Output the data for the visible rows to the browser's console
-	        // You might do something more useful with it!
-	        // console.log( api.rows( {page:'current'} ).data() );
-
-	        console.log( settings );
-	    }
-
-	    */
-
+        }
 
     });
 
-    // console.log("options?", options);
 };
 
 ReactiveDatatable.prototype.update = function(data, settings) {
@@ -51,15 +35,12 @@ ReactiveDatatable.prototype.update = function(data, settings) {
          */
         // console.log("//////////// ADD //////////////");
         dataDifference.forEach(function(dataItem) {
-
             var index = self.datatable.row('#' + dataItem._id);
-
             if (index.length > 0) {
                 self.datatable.row(index[0]).data(dataItem).invalidate();
             } else {
                 self.datatable.row.add(dataItem);
             }
-
         });
 
     } else if (data.length < existingData.length) {
@@ -68,8 +49,16 @@ ReactiveDatatable.prototype.update = function(data, settings) {
          */
         // console.log("//////////// REMOVE //////////////");
         dataDifference.forEach(function(dataItem) {
-            var index = self.datatable.row('#' + dataItem._id);
             self.datatable.row('#' + dataItem._id).remove();
+        });
+
+    } else if (existingData.length > 0 && (existingData.length === data.length)) {
+        /**
+         * UPDATE
+         */
+        // console.log("//////////// UPDATE //////////////");
+        data.forEach(function(dataItem) {
+            self.datatable.row('#' + dataItem._id).data(dataItem).invalidate();
         });
     } else if (!existingData.length) {
         /**
