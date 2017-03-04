@@ -16,7 +16,7 @@ The table only updates the row requiring to be updated. Other improvements to co
 In your template:
 
     <template name="containsTheDataTable">
-        {{> ReactiveDatatable tableData=reactiveDataFunction options=optionsObject }}
+        {{> reactiveDatatable tableData=reactiveDataFunction options=optionsObject }}
     </template>
 
 **Important:** Due to the way Blaze interprets parameters upon calling a template, `reactiveDataFunction` should *return a __function__ that returns an array*, not return the data itself. I'm sure there's a cleverer way to do this, but it works for now:
